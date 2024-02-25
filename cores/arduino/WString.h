@@ -21,13 +21,14 @@
 
 #ifndef String_class_h
 #define String_class_h
-
 #ifdef __cplusplus
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
+#include <stdint.h>
 #include <ctype.h>
-#include "avr/pgmspace.h"
+//#include <avr/pgmspace.h>
 
 // When compiling programs with this class, the following gcc parameters
 // dramatically increase performance and memory (RAM) efficiency, typically
@@ -35,8 +36,8 @@
 //     -felide-constructors
 //     -std=c++0x
 
-class __FlashStringHelper;
-#define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
+//class __FlashStringHelper;
+//#define F(string_literal) (reinterpret_cast<const __FlashStringHelper *>(PSTR(string_literal)))
 
 // An inherited class for holding the result of a concatenation.  These
 // result objects are assumed to be writable by subsequent concatenations.
@@ -59,7 +60,7 @@ public:
 	// be false).
 	String(const char *cstr = "");
 	String(const String &str);
-	String(const __FlashStringHelper *str);
+//	String(const __FlashStringHelper *str);
        #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 	String(String &&rval);
 	String(StringSumHelper &&rval);
@@ -86,7 +87,7 @@ public:
 	// marked as invalid ("if (s)" will be false).
 	String & operator = (const String &rhs);
 	String & operator = (const char *cstr);
-	String & operator = (const __FlashStringHelper *str);
+//	String & operator = (const __FlashStringHelper *str);
        #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 	String & operator = (String &&rval);
 	String & operator = (StringSumHelper &&rval);
@@ -107,7 +108,7 @@ public:
 	unsigned char concat(unsigned long num);
 	unsigned char concat(float num);
 	unsigned char concat(double num);
-	unsigned char concat(const __FlashStringHelper * str);
+//	unsigned char concat(const __FlashStringHelper * str);
 
 	// if there's not enough memory for the concatenated value, the string
 	// will be left unchanged (but this isn't signalled in any way)
@@ -121,7 +122,7 @@ public:
 	String & operator += (unsigned long num)	{concat(num); return (*this);}
 	String & operator += (float num)		{concat(num); return (*this);}
 	String & operator += (double num)		{concat(num); return (*this);}
-	String & operator += (const __FlashStringHelper *str){concat(str); return (*this);}
+//	String & operator += (const __FlashStringHelper *str){concat(str); return (*this);}
 
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, const String &rhs);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, const char *cstr);
@@ -133,7 +134,7 @@ public:
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, unsigned long num);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, float num);
 	friend StringSumHelper & operator + (const StringSumHelper &lhs, double num);
-	friend StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs);
+//	friend StringSumHelper & operator + (const StringSumHelper &lhs, const __FlashStringHelper *rhs);
 
 	// comparison (only works w/ Strings and "strings")
 	operator StringIfHelperType() const { return buffer ? &String::StringIfHelper : 0; }
@@ -160,8 +161,12 @@ public:
 	char& operator [] (unsigned int index);
 	void getBytes(unsigned char *buf, unsigned int bufsize, unsigned int index=0) const;
 	void toCharArray(char *buf, unsigned int bufsize, unsigned int index=0) const
-		{getBytes((unsigned char *)buf, bufsize, index);}
-	const char * c_str() const { return buffer; }
+		{ getBytes((unsigned char *)buf, bufsize, index); }
+	const char* c_str() const { return buffer; }
+	char* begin() { return buffer; }
+	char* end() { return buffer + length(); }
+	const char* begin() const { return c_str(); }
+	const char* end() const { return c_str() + length(); }
 
 	// search
 	int indexOf( char ch ) const;
@@ -187,6 +192,7 @@ public:
 	// parsing/conversion
 	long toInt(void) const;
 	float toFloat(void) const;
+	double toDouble(void) const;
 
 protected:
 	char *buffer;	        // the actual char array
@@ -200,7 +206,7 @@ protected:
 
 	// copy and move
 	String & copy(const char *cstr, unsigned int length);
-	String & copy(const __FlashStringHelper *pstr, unsigned int length);
+//	String & copy(const __FlashStringHelper *pstr, unsigned int length);
        #if __cplusplus >= 201103L || defined(__GXX_EXPERIMENTAL_CXX0X__)
 	void move(String &rhs);
 	#endif

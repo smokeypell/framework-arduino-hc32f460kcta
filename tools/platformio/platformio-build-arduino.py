@@ -18,7 +18,7 @@ build_core = board.get("build.core", "")
 
 
 # ensure framework is installed
-FRAMEWORK_DIR = platform.get_package_dir("framework-arduino-hc32f46x")
+FRAMEWORK_DIR = platform.get_package_dir("framework-arduino-hc32f460kcta")
 CORE_DIR = join(FRAMEWORK_DIR, "cores", "arduino")
 assert isdir(CORE_DIR)
 
@@ -72,7 +72,7 @@ for req in core_requirements:
     board.update(f"build.ddl.{req}", "true")
 
 # build the ddl core
-ddl_build_script = join(env.PioPlatform().get_package_dir("framework-hc32f46x-ddl"), "tools", "platformio", "platformio-build-ddl.py")
+ddl_build_script = join(env.PioPlatform().get_package_dir("framework-hc32f460kcta-ddl"), "tools", "platformio", "platformio-build-ddl.py")
 if not isfile(ddl_build_script):
     sys.stderr.write(f"Error: Missing PlatformIO build script %s! {ddl_build_script}")
     env.Exit(1)

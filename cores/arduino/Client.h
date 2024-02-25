@@ -19,9 +19,9 @@
 
 #ifndef client_h
 #define client_h
-#include "IPAddress.h"
 #include "Print.h"
 #include "Stream.h"
+#include "IPAddress.h"
 
 class Client : public Stream {
 

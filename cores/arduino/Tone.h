@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2015 Arduino LLC.  All right reserved.
+  Copyright (c) 2011 Arduino.  All right reserved.
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the GNU Lesser General Public
@@ -16,20 +16,32 @@
   Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
-#ifndef TONE_H_
-#define TONE_H_
+#ifndef _WIRING_TONE_
+#define _WIRING_TONE_
+
+
+#include <stdint.h>
+
 
 #ifdef __cplusplus
-extern "C"
-{
+  /*
+  * \brief Generate a tone to a pin.
+  *
+  * \param _pin
+  * \param frequency Tone frequency (in hertz)
+  * \param duration  Tone duration (in milliseconds)
+  */
+  extern void tone(uint8_t _pin, uint16_t frequency, uint32_t duration = 0);
+
+  /*
+  * \brief Stop tone generation on pin.
+  *
+  * \param _pin
+  */
+  extern void noTone(uint8_t _pin, bool destruct = false);
+
+//  extern  void HAL_TONE_TIMER_ISR(void);
+
 #endif
 
-#include "Arduino.h"
-
-  void tone(gpio_pin_t _pin, uint32_t frequency, uint32_t duration = 0);
-  void noTone(gpio_pin_t _pin);
-
-#ifdef __cplusplus
-} // extern "C"
-#endif
-#endif /* TONE_H_ */
+#endif /* _WIRING_TONE_ */
